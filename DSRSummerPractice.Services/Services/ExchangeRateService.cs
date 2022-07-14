@@ -117,13 +117,23 @@ public class ExchangeRateService : IExchangeRateService
         if(data.Count() != (start - end).TotalDays)
         {
             List<DateTime> dates = new();
-            DateTime currDate = start;
-            foreach(var el in data)
+            if(data.Count == 0)
             {
-                while (el.DateTime != currDate && currDate != end)
+                for (var i = start; i < end; i = i.AddDays(1))
                 {
-                    dates.Add(currDate);
-                    currDate = currDate.AddDays(1);
+                    dates.Add(i);
+                }
+            }
+            else
+            {
+                DateTime currDate = start;
+                foreach (var el in data)
+                {
+                    while (el.DateTime != currDate && currDate != end)
+                    {
+                        dates.Add(currDate);
+                        currDate = currDate.AddDays(1);
+                    }
                 }
             }
 
