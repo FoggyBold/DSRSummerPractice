@@ -1,11 +1,11 @@
-﻿namespace DSR_Summer_Practice.Services.DataTransferObject
+﻿namespace DSRSummerPractice.Services.DataTransferObject;
+
+/// <summary>
+/// This class defines entitie of currency
+/// </summary>
+public class Currency
 {
-    /// <summary>
-    /// This class defines entitie of currency
-    /// </summary>
-    public class Currency
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string CharCode { get; set; }
+    public string Name { get; set; }
 }

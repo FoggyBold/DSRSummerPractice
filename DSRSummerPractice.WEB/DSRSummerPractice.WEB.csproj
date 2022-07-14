@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSRSummerPractice.Data\DSRSummerPractice.Data.csproj" />
+    <ProjectReference Include="..\DSRSummerPractice.Services\DSRSummerPractice.Services.csproj" />
+    <ProjectReference Include="..\DSRSummerPractice.Shared\DSRSummerPractice.Shared.csproj" />
   </ItemGroup>
 
 </Project>

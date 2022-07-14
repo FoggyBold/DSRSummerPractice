@@ -6,6 +6,7 @@ using DSRSummerPractice.Services.Interfaces;
 using DSRSummerPractice.Shared.Entieties;
 using DSRSummerPractice.Shared.Interfaces;
 using DSRSummerPractice.Shared.Repositories;
+using DSRSummerPractice.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,11 @@ public class ExchangeRateService : IExchangeRateService
 {
     private readonly MainDBContext context;
     private IRepository<ValCurs> valCursRepository;
-    public ExchangeRateService(MainDBContext context, ValCursRepository valCursRepository)
+    public ExchangeRateService(MainDBContext context/*, ValCursRepository valCursRepository*/)
     {
         this.context = context;
-        this.valCursRepository = valCursRepository;
+        this.valCursRepository = new ValCursRepository(new ValCursDeserializerXML());
+        //this.valCursRepository = valCursRepository;
     }
 
     public async Task<ExchangeRate> AddExchangeRate(ExchangeRate exchangeRate)

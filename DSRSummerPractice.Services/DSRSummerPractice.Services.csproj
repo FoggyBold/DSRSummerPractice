@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DSRSummerPractice.Data\DSRSummerPractice.Data.csproj" />
+  </ItemGroup>
+
 </Project>

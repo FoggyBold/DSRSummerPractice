@@ -1,10 +1,10 @@
-﻿using DSR_Summer_Practice.Services.DataTransferObject;
+﻿namespace DSRSummerPractice.Services.Interfaces;
 
-namespace DSR_Summer_Practice.Services.Interfaces
+using DSRSummerPractice.Services.DataTransferObject;
+
+public interface IExchangeRateService
 {
-    public interface IExchangeRateService
-    {
-        IEnumerable<ExchangeRate> GetExchangeRates(int id, DateTime start, DateTime end);
-        IEnumerable<Currency> GetCurrencies();
-    }
+    Task<IEnumerable<ExchangeRate>> GetExchangeRates(int id, DateTime start, DateTime end);
+    Task<ExchangeRate> GetExchangeRate(int id, DateTime data);
+    Task<ExchangeRate> AddExchangeRate(ExchangeRate exchangeRate);
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DSRSummerPractice.Services.Interfaces;
 
-namespace DSRSummerPractice.Services.Interfaces
+using DSRSummerPractice.Services.DataTransferObject;
+
+public interface ICurrencyService
 {
-    internal interface ICurrencyService
-    {
-    }
+    Task<IEnumerable<Currency>> GetCurrencies();
+    Task<Currency> GetCurrency(int id);
 }
