@@ -1,7 +1,6 @@
-﻿namespace DSR_Summer_Practice.Shared.Interfaces
+﻿namespace DSRSummerPractice.Shared.Interfaces;
+
+public interface IDeserializerXML<T> where T : class
 {
-    public interface IDeserializerXML<T> where T : class
-    {
-        T deserialize(string url);
-    }
+    T deserialize(string url);
 }

@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSRSummerPractice.Data", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSRSummerPractice.Shared", "DSRSummerPractice.Shared\DSRSummerPractice.Shared.csproj", "{0E64B87A-4376-4E5F-8806-CE5C8EF4CF4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSRSummerPractice.Services", "DSRSummerPractice.Services\DSRSummerPractice.Services.csproj", "{D4929BB4-57E2-4C2B-A392-30967B88DB78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{0E64B87A-4376-4E5F-8806-CE5C8EF4CF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E64B87A-4376-4E5F-8806-CE5C8EF4CF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E64B87A-4376-4E5F-8806-CE5C8EF4CF4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4929BB4-57E2-4C2B-A392-30967B88DB78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4929BB4-57E2-4C2B-A392-30967B88DB78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4929BB4-57E2-4C2B-A392-30967B88DB78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4929BB4-57E2-4C2B-A392-30967B88DB78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

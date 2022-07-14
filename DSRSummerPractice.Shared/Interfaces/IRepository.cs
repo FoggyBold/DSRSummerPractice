@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DSRSummerPractice.Shared.Interfaces;
 
-namespace DSR_Summer_Practice.Shared.Interfaces
+using System;
+using System.Collections.Generic;
+
+public interface IRepository<T> where T : class
 {
-    public interface IRepository<T> where T : class
-    {
-        IEnumerable<T> find(DateTime start, DateTime end);
-        T get();
-    }
+    IEnumerable<T> find(DateTime start, DateTime end);
+    T find(DateTime date);
 }
