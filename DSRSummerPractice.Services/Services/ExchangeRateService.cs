@@ -25,123 +25,114 @@ public class ExchangeRateService : IExchangeRateService
 
     public async Task<ExchangeRate> AddExchangeRate(ExchangeRate exchangeRate)
     {
+
         var currency = await context
             .Currencies
             .FirstOrDefaultAsync(el => el.CharCode == exchangeRate.CharCode);
-        
+
         if (currency == null)
         {
             throw new Exception($"Currency CharCode = {exchangeRate.CharCode} not found");
         }
 
-        var newExchangeRate = new Data.Entities.ExchangeRate()
+        var valute = await context.ExchangeRates.FirstOrDefaultAsync(el => el.DateTime.Date == exchangeRate.DateTime.Date && el.CurrencyId == currency.ID);
+        if(valute == null)
         {
-            DateTime = exchangeRate.DateTime,
-            Value = exchangeRate.Value,
-            Currency = currency
-        };
+            var newExchangeRate = new Data.Entities.ExchangeRate()
+            {
+                DateTime = exchangeRate.DateTime,
+                Value = exchangeRate.Value,
+                Currency = currency
+            };
 
-        await context.ExchangeRates.AddAsync(newExchangeRate);
-        await context.SaveChangesAsync();
+            await context.ExchangeRates.AddAsync(newExchangeRate);
+            await context.SaveChangesAsync();
 
-        return exchangeRate;
+            return exchangeRate;
+        }
+
+        return null;
     }
 
     public async Task<ExchangeRate> GetExchangeRate(int id, DateTime date)
     {
         var exchangeRate = await context
             .ExchangeRates
-            .FirstOrDefaultAsync(el => el.CurrencyId == id && el.DateTime == date);
+            .FirstOrDefaultAsync(el => el.CurrencyId == id && el.DateTime.Date == date.Date);
 
-        if(exchangeRate == null)
+        if (exchangeRate != null)
         {
-            var currency = await context.Currencies.FirstOrDefaultAsync(el => el.ID == id);
-            
-            if (currency == null)
+            return new ExchangeRate()
             {
-                throw new Exception($"Currency id = {id} not found");
-            }
-
-            var answer = valCursRepository
-                .find(date)
-                .Valute
-                .FirstOrDefault(el => el.CharCode == currency.CharCode);
-            
-            if(answer == null)
-            {
-                throw new Exception("Service did not give an answer");
-            }
-
-            var temp = AddExchangeRate(new ExchangeRate()
-            {
-                CharCode = currency.CharCode,
                 DateTime = date,
-                Value = Convert.ToDouble(answer.Value)
-            }).Result;
-
-            exchangeRate = new Data.Entities.ExchangeRate()
-            {
-                Currency = currency,
-                Value = temp.Value,
-                DateTime = date
+                Value = exchangeRate.Value,
+                CurrencyName = exchangeRate.Currency.Name
             };
         }
-        
-        var data = new ExchangeRate()
-        {
-            DateTime = date,
-            Value = exchangeRate.Value,
-            CurrencyName = exchangeRate.Currency.Name
-        };
 
-        return data;
+        var currency = await context.Currencies.FirstOrDefaultAsync(el => el.ID == id);
+
+        if (currency == null)
+        {
+            throw new Exception($"Currency id = {id} not found");
+        }
+
+        var answer = valCursRepository.find(date);
+
+        if (answer == null)
+        {
+            throw new Exception("Service did not give an answer");
+        }
+
+        var valute = answer.Valute.FirstOrDefault(el => el.CharCode == currency.CharCode);
+
+        if (valute == null)
+        {
+            throw new Exception("Answer do not have a valute");
+        }
+
+        var temp = AddExchangeRate(new ExchangeRate()
+        {
+            CharCode = currency.CharCode,
+            DateTime = Convert.ToDateTime(answer.Date),
+            Value = Convert.ToDouble(valute.Value) / valute.Nominal,
+            CurrencyName = valute.Name
+        }).Result;
+
+        return temp;
     }
 
     public async Task<IEnumerable<ExchangeRate>> GetExchangeRates(int id, DateTime start, DateTime end)
     {
         var exchangeRates = context
             .ExchangeRates
-            .Where(el => el.CurrencyId == id && el.DateTime >= start && el.DateTime <= end)
+            .Where(el => el.CurrencyId == id && el.DateTime.Date >= start.Date && el.DateTime.Date <= end.Date)
             .AsQueryable();
+
+        var currency = await context.Currencies.FirstOrDefaultAsync(el => el.ID == id);
 
         var data = (await exchangeRates.ToListAsync())
             .Select(el => new ExchangeRate 
             {
                 DateTime = el.DateTime,
                 Value = Convert.ToDouble(el.Value),
-                CurrencyName = el.Currency.Name,
-                CharCode = el.Currency.CharCode
+                CurrencyName = currency.Name,
+                CharCode = currency.CharCode
             })
             .ToList();
 
         if(data.Count() != (start - end).TotalDays)
         {
-            List<DateTime> dates = new();
-            if(data.Count == 0)
+            for (var i = start; i < end; i = i.AddDays(1))
             {
-                for (var i = start; i < end; i = i.AddDays(1))
+                if(data.FirstOrDefault(el => el.DateTime.Date == i.Date) == null)
                 {
-                    dates.Add(i);
-                }
-            }
-            else
-            {
-                DateTime currDate = start;
-                foreach (var el in data)
-                {
-                    while (el.DateTime != currDate && currDate != end)
+                    var temp = GetExchangeRate(id, i);
+                    if (temp.Result != null)
                     {
-                        dates.Add(currDate);
-                        currDate = currDate.AddDays(1);
+                        data.Add(temp.Result);
                     }
                 }
-            }
-
-            foreach(var date in dates)
-            {
-                var temp = GetExchangeRate(id, date).Result;
-                data.Add(temp);
-                await AddExchangeRate(temp);
             }
         }
 
