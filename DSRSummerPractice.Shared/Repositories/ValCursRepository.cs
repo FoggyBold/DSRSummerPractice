@@ -33,7 +33,6 @@ public class ValCursRepository : IRepository<ValCurs>
         string day = date.Day.ToString().Length == 1 ? $"0{date.Day}" : date.Day.ToString();
         string month = date.Month.ToString().Length == 1 ? $"0{date.Month}" : date.Month.ToString();
         ValCurs res = deserializerXML.deserialize(url + $"?date_req={day}/{month}/{date.Year}");
-        res.Date = date.ToString();
         return res;
     }
 
