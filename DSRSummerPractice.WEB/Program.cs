@@ -31,8 +31,6 @@ builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
 
-// Configure the HTTP request pipeline.
-
 var app = builder.Build();
 
 app.UseStaticFiles();

@@ -1,0 +1,20 @@
+﻿@using DSRSummerPractice.WEB.ViewModels;
+
+<div class="ct-chart ct-square">
+    <script>
+        var model = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+
+        var data ={
+            labels: model.days,
+            series: [
+                model.values
+            ]
+        };
+        
+        var options = {
+          width: 600,
+          height: 200
+        };
+        new Chartist.Line('.ct-chart', data, options);
+    </script>
+</div>
