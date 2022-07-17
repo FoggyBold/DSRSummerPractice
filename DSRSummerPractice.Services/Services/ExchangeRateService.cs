@@ -35,23 +35,17 @@ public class ExchangeRateService : IExchangeRateService
             throw new Exception($"Currency CharCode = {exchangeRate.CharCode} not found");
         }
 
-        var valute = await context.ExchangeRates.FirstOrDefaultAsync(el => el.DateTime.Date == exchangeRate.DateTime.Date && el.CurrencyId == currency.ID);
-        if(valute == null)
+        var newExchangeRate = new Data.Entities.ExchangeRate()
         {
-            var newExchangeRate = new Data.Entities.ExchangeRate()
-            {
-                DateTime = exchangeRate.DateTime,
-                Value = exchangeRate.Value,
-                Currency = currency
-            };
+            DateTime = exchangeRate.DateTime,
+            Value = exchangeRate.Value,
+            Currency = currency
+        };
 
-            await context.ExchangeRates.AddAsync(newExchangeRate);
-            await context.SaveChangesAsync();
+        await context.ExchangeRates.AddAsync(newExchangeRate);
+        await context.SaveChangesAsync();
 
-            return exchangeRate;
-        }
-
-        return null;
+        return exchangeRate;
     }
 
     public async Task<ExchangeRate> GetExchangeRate(int id, DateTime date)
@@ -128,10 +122,7 @@ public class ExchangeRateService : IExchangeRateService
                 if(data.FirstOrDefault(el => el.DateTime.Date == i.Date) == null)
                 {
                     var temp = GetExchangeRate(id, i);
-                    if (temp.Result != null)
-                    {
-                        data.Add(temp.Result);
-                    }
+                    data.Add(temp.Result);
                 }
             }
         }
