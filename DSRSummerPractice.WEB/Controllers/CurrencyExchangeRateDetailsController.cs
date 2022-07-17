@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DSRSummerPractice.Services.Interfaces;
 using DSRSummerPractice.WEB.ViewModels;
-
+using DSRSummerPractice.Services.DataTransferObject;
 
 public class CurrencyExchangeRateDetailsController : Controller
 {
@@ -12,39 +12,33 @@ public class CurrencyExchangeRateDetailsController : Controller
     {
         this.exchangeRateService = exchangeRateService;
     }
-    public IActionResult Index(int id)
+    public IActionResult Index(int id, int numberOfDays = 7)
     {
-        DateTime start = DateTime.Now.AddDays(-7);
-        var result = exchangeRateService.GetExchangeRates(id, start, DateTime.Now).Result.ToList();
+        DateTime start = DateTime.Now.AddDays(-numberOfDays + 1);
+        var result = exchangeRateService.GetExchangeRates(id, start, DateTime.Now).Result.ToHashSet<ExchangeRate>().ToList();
 
         if (result == null)
         {
             throw new Exception("Result is null");
         }
 
-        //var temp = new List<ExchangeRateViewModel>();
-        //foreach(var item in result)
-        //{
-        //    temp.Add(new ExchangeRateViewModel
-        //    {
-        //        DateTime = item.DateTime,
-        //        Value = item.Value
-        //    });
-        //}
-        //var exchangeRatesObj = new ExchangeRatesViewModel
-        //{
-        //    CurrencyName = result[0].CurrencyName,
-        //    ExchangeRates = temp
-        //};
+        result.Sort((x, y) =>
+        {
+            return x.DateTime.CompareTo(y.DateTime);
+        });
+
         var days = new List<string>();
         var values = new List<double>();
         foreach(var value in result)
         {
-            days.Add(value.DateTime.Date.ToString().Substring(0,10));
+            days.Add(value.DateTime.ToString().Substring(0, 10));
             values.Add(value.Value);
         }
+
         var exchangeRatesObj = new ExchangeRatesViewModel 
         {
+            Id = id,
+            CharCode = result[0].CharCode,
             CurrencyName = result[0].CurrencyName,
             Days = days,
             Values = values

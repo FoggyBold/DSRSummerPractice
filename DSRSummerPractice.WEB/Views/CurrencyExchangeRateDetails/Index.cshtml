@@ -1,20 +1,77 @@
 ﻿@using DSRSummerPractice.WEB.ViewModels;
 
-<div class="ct-chart ct-square">
-    <script>
-        var model = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+<div>
+    1 @Model.CurrencyName = @Model.Values[@Model.Values.Count - 1] Российского рубля
+</div>
 
-        var data ={
-            labels: model.days,
-            series: [
-                model.values
-            ]
-        };
+<div>
+    <div>
+      @*@Html.ActionLink("НЕДЕЛЯ","Index","CurrencyExchangeRateDetails",new {id=Model.Id})
+      @Html.ActionLink("МЕСЯЦ","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 30})
+      @Html.ActionLink("ПОЛГОДА","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 181})
+      @Html.ActionLink("ГОД","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 365})*@
+      <a class="button" asp-controller="CurrencyExchangeRateDetails"
+       asp-action="Index" asp-route-id="@Model.Id">НЕДЕЛЯ</a>
+       <a class="button" asp-controller="CurrencyExchangeRateDetails"
+       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="30">МЕСЯЦ</a>
+       <a class="button" asp-controller="CurrencyExchangeRateDetails"
+       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="180">ПОЛГОДА</a>
+       <a class="button" asp-controller="CurrencyExchangeRateDetails"
+       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="365">ГОД</a>
+    </div>
+    <div class="ct-chart ct-square">
+        <script>
+            var model = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+
+            var days = []
+
+            if(params.numberOfDays == 365 || params.numberOfDays == 180){
+                var temp = model.days[0].substr(3,2);
+                days.push(temp);
+                for(let i = 1; i < model.days.length; ++i){
+                    if(model.days[i].substr(3,2) != temp){
+                        temp = model.days[i].substr(3,2);
+                        days.push(temp);
+                    }
+                    else{
+                        days.push("");
+                    }
+                }
+            }
+            else if(params.numberOfDays == 30){
+                var temp = model.days[0];
+                days.push(temp);
+                for(let i = 1; i < model.days.length; ++i){
+                    if(i % 3 == 0){
+                        temp = model.days[i];
+                        days.push(temp);
+                    }
+                    else{
+                        days.push("");
+                    }
+                }
+            }
+            else {
+                days = model.days;
+            }
+
+            var data ={
+                labels: /*model.*/days,
+                series: [
+                    model.values
+                ]
+            };
         
-        var options = {
-          width: 600,
-          height: 200
-        };
-        new Chartist.Line('.ct-chart', data, options);
-    </script>
+            var options = {
+              width: 1000,
+              height: 500,
+              showPoint: false
+            };
+            new Chartist.Line('.ct-chart', data, options);
+        </script>
+    </div>
 </div>
