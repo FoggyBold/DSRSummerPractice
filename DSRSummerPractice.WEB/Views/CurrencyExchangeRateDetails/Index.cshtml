@@ -29,7 +29,7 @@
 
             var days = []
 
-            if(params.numberOfDays == 365 || params.numberOfDays == 180){
+            if(params.numberOfDays >= 66){
                 var temp = model.days[0].substr(3,2);
                 days.push(temp);
                 for(let i = 1; i < model.days.length; ++i){
@@ -42,7 +42,7 @@
                     }
                 }
             }
-            else if(params.numberOfDays == 30){
+            else if(params.numberOfDays > 25 && params.numberOfDays < 66){
                 var temp = model.days[0];
                 days.push(temp);
                 for(let i = 1; i < model.days.length; ++i){
