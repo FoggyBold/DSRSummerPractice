@@ -6,18 +6,18 @@
 
 <div>
     <div>
-      @*@Html.ActionLink("НЕДЕЛЯ","Index","CurrencyExchangeRateDetails",new {id=Model.Id})
-      @Html.ActionLink("МЕСЯЦ","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 30})
-      @Html.ActionLink("ПОЛГОДА","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 181})
-      @Html.ActionLink("ГОД","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 365})*@
-      <a class="button" asp-controller="CurrencyExchangeRateDetails"
-       asp-action="Index" asp-route-id="@Model.Id">НЕДЕЛЯ</a>
-       <a class="button" asp-controller="CurrencyExchangeRateDetails"
-       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="30">МЕСЯЦ</a>
-       <a class="button" asp-controller="CurrencyExchangeRateDetails"
-       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="180">ПОЛГОДА</a>
-       <a class="button" asp-controller="CurrencyExchangeRateDetails"
-       asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="365">ГОД</a>
+        @*@Html.ActionLink("НЕДЕЛЯ","Index","CurrencyExchangeRateDetails",new {id=Model.Id})
+        @Html.ActionLink("МЕСЯЦ","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 30})
+        @Html.ActionLink("ПОЛГОДА","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 181})
+        @Html.ActionLink("ГОД","Index","CurrencyExchangeRateDetails",new {id=Model.Id, numberOfDays = 365})*@
+        <a class="btn" asp-controller="CurrencyExchangeRateDetails"
+        asp-action="Index" asp-route-id="@Model.Id">НЕДЕЛЯ</a>
+        <a class="btn" asp-controller="CurrencyExchangeRateDetails"
+        asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="30">МЕСЯЦ</a>
+        <a class="btn" asp-controller="CurrencyExchangeRateDetails"
+        asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="180">ПОЛГОДА</a>
+        <a class="btn" asp-controller="CurrencyExchangeRateDetails"
+        asp-action="Index" asp-route-id="@Model.Id" asp-route-numberOfDays="365">ГОД</a>
     </div>
     <div class="ct-chart ct-square">
         <script>

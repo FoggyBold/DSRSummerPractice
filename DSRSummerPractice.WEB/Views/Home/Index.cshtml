@@ -3,10 +3,10 @@
     @{
         foreach (Currency сurrency in Model.currencies)
         {
-            <label class="container">@Html.ActionLink(сurrency.Name, "Index", "CurrencyExchangeRateDetails", new { id = сurrency.Id})
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
+            <label class="container">@Html.ActionLink(сurrency.Name, "Index", "CurrencyExchangeRateDetails", new { id = сurrency.Id})</label>
         }
     }
 </div>
+
+@*<input type="checkbox" value=currency.Id>
+                <span class="checkmark"></span>*@
